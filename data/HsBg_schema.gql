@@ -1,0 +1,63 @@
+type Game @collection(name: "games") {
+    date: Time!
+    hero:Hero!
+    position: Int!
+    mmr: Int!
+    board: [BoardMinion]
+    available: [String]
+    unavailable: [String]
+    tierTurn:Tiers!
+    endingTurn: Int!
+    gameId: String!
+    player: String!
+}
+
+type Board @collection(name: "boards") {
+    date: Time!
+    hero:Hero!
+    minions: [BoardMinion]
+    turn: Int!
+    isSelf:Boolean!
+    combatResult: String!
+    gameId:String!
+    player:String!
+}
+
+type Hero @embedded {
+    name: String!
+    slug: String!
+}
+type Tiers @embedded {
+    two: Int!
+    three: Int!
+    four: Int!
+    five: Int!
+    six: Int!
+}
+
+type BoardMinion @embedded {
+    name: String!
+    stats: BoardMinionStats!
+    capabilities:BoardMinionCapabilities!
+}
+
+type BoardMinionCapabilities @embedded {
+    poison: Boolean!
+    windfury: Boolean!
+    divineShield: Boolean!
+    taunt: Boolean!
+    deathrattle: Boolean!
+    reborn: Boolean!
+}
+
+
+type BoardMinionStats @embedded {
+    attack: Int!
+    health: Int!
+}
+
+type Query {
+    allGames: [Game!]! @index(name: "all_games")
+    allBoards: [Board!]! @index(name: "all_boards")
+}
+
